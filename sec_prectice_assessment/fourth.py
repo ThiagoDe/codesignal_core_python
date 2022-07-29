@@ -29,3 +29,39 @@
 #     * 6 query: {2: 3, 3: 2}
 #     * 7 query: answer is 2
 # * The sum of the results for all the get queries is equal to 4 + 2 = 6.
+queryType = ["insert", "insert", "addToValue", "addToKey", "get"]
+queryType = ["insert", "addToValue", "get",
+             "insert", "addToKey", "addToValue", "get"]
+query = [[1, 2], [2, 3], [2], [1], [3]]
+query = [[1, 2], [2], [1], [2, 3], [1], [-1], [3]]
+
+def solution(queryType, query):
+    queries = {}
+    tqueries = {}
+    gets = []
+    for i in range(len(queryType)):
+        if queryType[i] == "insert":
+            k,v = query[i]
+            queries[k] = v
+            print(queries)
+        if queryType[i] == "addToValue":
+            nv = query[i][0]
+            for k, v in queries.items():
+                queries[k] += nv 
+            print(queries)
+        if queryType[i] == "addToKey":
+            nk = query[i][0]
+            for key, val in queries.items():
+                tqueries[key + nk] = val
+            queries = tqueries 
+            tqueries = {}   
+        if queryType[i] == "get":
+            t = query[i][0]
+            gets.append(queries[t])
+
+    return sum(gets)
+    print(queries)
+    print(tqueries)
+
+
+print(solution(queryType, query))
